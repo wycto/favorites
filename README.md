@@ -6,8 +6,8 @@
 如果有推荐的，可以告诉我，一起分享
 
 ### 作者网站
-1. 博客站 [www.wycto.cn](https://www.wycto.cn)
-2. 主网站 [www.wycto.com](https://www.wycto.com) 
+1. 主网站 [www.wycto.cn](https://www.wycto.com)
+2. 技术站 [www.wycto.com](https://www.wycto.cn) 
 
 # IT类网站
 ## 开发工具
