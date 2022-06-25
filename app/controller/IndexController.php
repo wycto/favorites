@@ -3,14 +3,18 @@
 namespace app\controller;
 
 use app\model\Navigation;
+use app\model\User;
 use support\Request;
 
-class Index
+class IndexController
 {
     public function index(Request $request)
     {
-        $rows = Navigation::all();
-        return view('index/index', ['rows'=>$rows]);
+        return view('index/index');
+    }
+
+    function test(){
+        return view('index/test');
     }
 
 }

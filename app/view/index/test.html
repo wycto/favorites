@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>wycto导航｜收藏夹</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 layui-vue 样式 -->
+    <link rel="stylesheet" type="text/css" href="/static/layui-vue/css/index.css">
+    <!-- 引入 Vue 3, 使用全局变量 Vue -->
+    <script src="/static/layui-vue/js/vue.global.js"></script>
+    <!-- 引入 layui-vue 组件库, 使用全局变量 LayuiVue -->
+    <script src="/static/layui-vue/js/index.js"></script>
+    <script src="/static/layui-vue/js/axios.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul,li{
+            list-style: none;
+        }
+        .ui-slide-box{
+            width: 300px;
+        }
+        .ui-slide-item{
+            width: 100%;
+            position: relative;
+        }
+        .ui-slide-item-text{
+            display: block;
+            background-color: #000000;
+            color: white;
+            border-bottom: 1px solid yellow;
+            height: 40px;
+            line-height: 40px;
+        }
+        .ui-slide-item .ui-slide-box{
+            display: none;
+            position: absolute;
+            left: 300px;
+            top: 0;
+        }
+        .ui-slide-item:hover > .ui-slide-box{
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<ul class="ui-slide-box">
+    <li class="ui-slide-item">
+        <span class="ui-slide-item-text">aaaaaaaaaaaaa</span>
+        <ul class="ui-slide-box">
+            <li class="ui-slide-item">
+                <span class="ui-slide-item-text">aaaaaaaaaaaa</span>
+                <ul class="ui-slide-box">
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">dddddddd </span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">sssssssssssss</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">eeeeeeeeeeee</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">ccccccccccccc</span>
+                        <ul class="ui-slide-box">
+                            <li class="ui-slide-item">
+                                <span class="ui-slide-item-text">aaaaaaaaaaaaa</span>
+                                <ul class="ui-slide-box">
+                                    <li class="ui-slide-item">
+                                        <span class="ui-slide-item-text">aaaaaaaaaaaa</span>
+                                        <ul class="ui-slide-box">
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">dddddddd </span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">sssssssssssss</span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">eeeeeeeeeeee</span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">ccccccccccccc</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="ui-slide-item">
+                                        <span class="ui-slide-item-text">bbbbbbbbbb</span>
+                                        <ul class="ui-slide-box">
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">sfsdfsdfsd </span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">cvwdfsd</span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">ewewewe</span>
+                                            </li>
+                                            <li class="ui-slide-item">
+                                                <span class="ui-slide-item-text">xxcxc</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="ui-slide-item">
+                <span class="ui-slide-item-text">bbbbbbbbbb</span>
+                <ul class="ui-slide-box">
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">sfsdfsdfsd </span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">cvwdfsd</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">ewewewe</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">xxcxc</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="ui-slide-item">
+        <span class="ui-slide-item-text">bbbbbbbbbbb</span>
+        <ul class="ui-slide-box">
+            <li class="ui-slide-item">
+                <span class="ui-slide-item-text">aaaaaaaaaaaa</span>
+                <ul class="ui-slide-box">
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">dddddddd </span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">sssssssssssss</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">eeeeeeeeeeee</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">ccccccccccccc</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li class="ui-slide-item">
+        <span class="ui-slide-item-text">cccccccccccccccccc</span>
+        <ul class="ui-slide-box">
+            <li class="ui-slide-item">
+                <span class="ui-slide-item-text">rrrrrrrrrrrrrrrrrrrrrrrrrr</span>
+                <ul class="ui-slide-box">
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">dddddddd </span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">sssssssssssss</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">eeeeeeeeeeee</span>
+                    </li>
+                    <li class="ui-slide-item">
+                        <span class="ui-slide-item-text">ccccccccccccc</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+</html>

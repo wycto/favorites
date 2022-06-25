@@ -1,18 +1,135 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
+    <title>wycto导航｜收藏夹</title>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <title>wycto 导航｜收藏夹</title>
-    <script src="/static/vue3/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 layui-vue 样式 -->
+    <link rel="stylesheet" type="text/css" href="/static/layui-vue/css/index.css">
+    <!-- 引入 Vue 3, 使用全局变量 Vue -->
+    <script src="/static/layui-vue/js/vue.global.js"></script>
+    <!-- 引入 layui-vue 组件库, 使用全局变量 LayuiVue -->
+    <script src="/static/layui-vue/js/index.js"></script>
+    <script src="/static/layui-vue/js/axios.min.js"></script>
+    <style>
+        *{padding: 0;margin: 0}
+        .item-nav-box{margin-top: 20px;}
+        /*.item{
+            width: 150px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #cccccc;
+            border-bottom: none;
+            padding: 0px 10px;
+            cursor: pointer;
+        }
+        .item:last-child{
+            border-bottom: 1px solid #cccccc;
+        }*/
+        ul,li{
+            list-style: none;
+        }
+        .ui-slide-box{
+            width: 400px;
+        }
+        .ui-slide-item{
+            width: 100%;
+            position: relative;
+            border: 1px solid #cccccc;
+            border-bottom: none;
+            padding-left: 10px;
+            background-color: #eeeeee;
+        }
+        .ui-slide-item-text{
+            display: block;
+            width: 400px;
+            height: 40px;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        .ui-slide-item:last-child{
+            border-bottom: 1px solid #cccccc;
+        }
+        .ui-slide-item .ui-slide-box{
+            display: none;
+            position: absolute;
+            left: 410px;
+            top: 0;
+        }
+        .ui-slide-item:hover > .ui-slide-box{
+            display: block;
+        }
+    </style>
 </head>
+
 <body>
-<ul>
-    {foreach $rows as $key=>$row }
-    <li><a target="_blank" href="{$row.url}">{$row.name}</a></li>
-    {/foreach}
-</ul>
+<div id="app">
+    <lay-container fluid>
+        <div class="item-nav-box">
+            <!--<div class="item" v-for="item in items">{{item.name}}</div>-->
+            <ul class="ui-slide-box">
+                <li class="ui-slide-item" v-for="item in items">
+                    <span class="ui-slide-item-text">{{item.name}}</span>
+                    <ul class="ui-slide-box" v-if="item.children.length>0">
+                        <li class="ui-slide-item" v-for="item2 in item.children">
+                            <span class="ui-slide-item-text" v-if="item2.children"><lay-icon type="layui-icon-star-fill"></lay-icon> {{item2.name}}</span>
+                            <span class="ui-slide-item-text" v-else><a target="_blank" :href="item2.url"><lay-icon type="layui-icon-website"></lay-icon> {{item2.name}}</a></span>
+                            <ul class="ui-slide-box" v-if="item2.children.length>0">
+                                <li class="ui-slide-item" v-for="item3 in item2.children">
+                                    <span class="ui-slide-item-text" v-if="item3.children.length>0"><lay-icon type="layui-icon-star-fill"></lay-icon> {{item3.name}}</span>
+                                    <span class="ui-slide-item-text" v-else><lay-icon type="layui-icon-website"></lay-icon> <a target="_blank" :href="item3.url">{{item3.name}}</a></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </lay-container>
+    <div style="position: absolute;bottom: 50px;right: 50px;font-size: 30px;height: 20px;width: 20px;"><a href="/navigation/create"><lay-icon type="layui-icon-add-circle-fine" size="26px" color="red"></lay-icon></a></div>
+</div>
 </body>
+<script>
+    const { createApp, ref } = Vue;
+    const { layer } = LayuiVue;
+
+    const App = {
+        data() {
+            return {
+                items: [],
+                addbuttom:false
+            }
+        },
+        methods: {
+            getlist() {
+                let that = this;
+                axios.get('/navigation/dataList',{headers: {'token': localStorage.getItem('token')}}).then(function (res) {
+                        console.log(res);
+                        if(res.status==200){
+                            if(res.data.code==200){
+                                layer.msg(res.data.msg, { time: 1000 })
+                                that.items = res.data.list;
+                            }else{
+                                layer.msg(res.data.msg, { icon : 2, time: 1000})
+                            }
+                        }else{
+                            layer.msg("请求失败，状态码："+res.status, { icon : 2, time: 1000})
+                        }
+                    }).catch(function (error) { // 请求失败处理
+                        console.log(error);
+                        layer.msg(error.message, { icon : 2, time: 100000})
+                    });
+            }
+        },
+        mounted() {
+            console.log(this.getlist())
+        }
+    };
+
+    const app = createApp(App);
+    app.use(LayuiVue);
+    app.mount('#app');
+</script>
 </html>

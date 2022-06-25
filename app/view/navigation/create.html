@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>添加-wycto导航｜收藏夹</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 引入 layui-vue 样式 -->
+  <link rel="stylesheet" type="text/css" href="/static/layui-vue/css/index.css">
+  <!-- 引入 Vue 3, 使用全局变量 Vue -->
+  <script src="/static/layui-vue/js/vue.global.js"></script>
+  <!-- 引入 layui-vue 组件库, 使用全局变量 LayuiVue -->
+  <script src="/static/layui-vue/js/index.js"></script>
+  <script src="/static/layui-vue/js/axios.min.js"></script>
+  <script src="/static/js/public.js"></script>
+</head>
+
+<body>
+<div id="app">
+  <lay-container fluid>
+    <lay-panel>
+      <div style="padding: 30px;">
+      <lay-form :model="model">
+        <lay-form-item label="上级" prop="pid">
+          <lay-cascader :options="options" v-model="value" placeholder="选择上级" style="width:100%" @change="onChange">
+          </lay-cascader>
+        </lay-form-item>
+        <lay-form-item label="名称" prop="name">
+          <lay-input v-model="model.name"></lay-input>
+        </lay-form-item>
+        <lay-form-item label="地址" prop="url">
+          <lay-input v-model="model.url"></lay-input>
+        </lay-form-item>
+        <lay-form-item>
+          <lay-button @click="validate1">添加</lay-button>
+        </lay-form-item>
+      </lay-form>
+    </div>
+    </lay-panel>
+  </lay-container>
+</div>
+</body>
+<script>
+  const { createApp, ref,reactive } = Vue;
+  const { layer } = LayuiVue;
+  const value=ref(null)
+  const App = {
+    data() {
+      return {
+        model: {},
+        options: [],
+        value:0
+      }
+    },
+    methods: {
+      onChange() {
+        this.count++
+      }
+    },
+    mounted() {
+      let that = this;
+      axios.get('/navigation/options',{headers: {'token': localStorage.getItem('token')}}).then(function (res) {
+        console.log(res);
+        if(res.status==200){
+          if(res.data.code==200){
+            that.options = res.data.list;
+            console.log('res.data.list',res.data.list);
+            console.log('options',that.options);
+          }else{
+            layer.msg(res.data.msg, { icon : 2, time: 1000})
+          }
+        }else{
+          layer.msg("请求失败，状态码："+res.status, { icon : 2, time: 1000})
+        }
+      }).catch(function (error) { // 请求失败处理
+        layer.msg(error.message, { icon : 2, time: 100000})
+      });
+    }
+  };
+
+  const app = createApp(App);
+  app.use(LayuiVue);
+  app.mount('#app');
+</script>
+</html>
