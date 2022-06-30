@@ -21,9 +21,9 @@
   <lay-container fluid>
     <lay-panel>
       <div style="padding: 30px;">
-      <lay-form :model="model">
+      <lay-form :model="model" ref="layFormRef1" :rules="rules" required initValidate>
         <lay-form-item label="上级" prop="pid">
-          <lay-cascader :options="options" v-model="value" placeholder="选择上级" style="width:100%" @change="onChange">
+          <lay-cascader :options="options" v-model="model.pid" placeholder="选择上级" style="width:100%" @change="onChange">
           </lay-cascader>
         </lay-form-item>
         <lay-form-item label="名称" prop="name">
@@ -45,18 +45,60 @@
   const { createApp, ref,reactive } = Vue;
   const { layer } = LayuiVue;
   const value=ref(null)
+
   const App = {
     data() {
       return {
-        model: {},
-        options: [],
-        value:0
+        options: []
+      }
+    },
+    setup() {
+      const rules = ref({
+        email : {
+          type : 'email'
+        },
+        password : {
+          type :  'string',
+          min : 8,
+          max : 16
+        }
+      })
+
+      const model = ref({})
+
+      const layFormRef1 = ref(null);
+      // 校验
+      const validate1 = function() {
+        model.pid = value
+        layFormRef1.value.validate((isValidate, model, errors) => {
+          layer.open({
+              type: 1,
+              title:"表单提交结果",
+              content: `<div style="padding: 10px"><p>是否通过 : ${isValidate}</p> <p>表单数据 : ${JSON.stringify(model)} </p> <p>错误信息 : ${JSON.stringify(errors)}</p></div>`,
+              shade: false,
+              isHtmlFragment: true,
+              btn : [{ text: '确认', callback(index) {  layer.close(index) }}],
+              area : '500px'
+          });
+        });
+      }
+
+      const onChange = function (el,a,b) {
+        console.log(el,a,b)
+      }
+
+      return {
+        layFormRef1,
+        validate1,
+        rules,
+        model,
+        onChange
       }
     },
     methods: {
       onChange() {
         this.count++
-      }
+      },
     },
     mounted() {
       let that = this;

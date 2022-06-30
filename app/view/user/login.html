@@ -47,12 +47,6 @@
             }
         },
         setup() {
-            let that = this;
-            const ruleDemo1 = reactive({
-                email: "",
-                password: ""
-            })
-
             const rules = ref({
                 email : {
                     type : 'email'
@@ -102,7 +96,6 @@
             }
 
             return {
-                ruleDemo1,
                 layFormRef1,
                 validate1,
                 rules
