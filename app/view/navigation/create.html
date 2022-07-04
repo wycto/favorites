@@ -21,9 +21,9 @@
   <lay-container fluid>
     <lay-panel>
       <div style="padding: 30px;">
-      <lay-form :model="model" ref="layFormRef1" :rules="rules" required initValidate>
+      <lay-form :model="model" ref="layFormRef1" :rules="rules" initValidate>
         <lay-form-item label="上级" prop="pid">
-          <lay-cascader :options="options" v-model="model.pid" placeholder="选择上级" style="width:100%" @change="onChange">
+          <lay-cascader :options="options" v-model="model.pid" placeholder="选择上级" style="width:100%">
           </lay-cascader>
         </lay-form-item>
         <lay-form-item label="名称" prop="name">
@@ -54,13 +54,11 @@
     },
     setup() {
       const rules = ref({
-        email : {
-          type : 'email'
+        pid : {
+          type : 'string'
         },
-        password : {
-          type :  'string',
-          min : 8,
-          max : 16
+        name : {
+          type :  'string'
         }
       })
 
@@ -69,9 +67,37 @@
       const layFormRef1 = ref(null);
       // 校验
       const validate1 = function() {
-        model.pid = value
+
         layFormRef1.value.validate((isValidate, model, errors) => {
-          layer.open({
+          if(!model.pid){
+            layer.msg("清选择上级", { icon : 2, time: 5000})
+            return false;
+          }
+
+          if(!model.name){
+            layer.msg("清填写名称", { icon : 2, time: 5000})
+            return false;
+          }
+
+          if(isValidate==true){
+            axios.post('/Navigation/store',model,{headers: {'token': localStorage.getItem('token')}}).then(function (res) {
+              console.log(res);
+              if(res.status==200){
+                if(res.data.code==200){
+                  window.location.href = "/";
+                  layer.msg(res.data.msg);
+                }else{
+                  layer.msg(res.data.msg, { icon : 2, time: 1000})
+                }
+              }else{
+                layer.msg("请求失败，状态码："+res.status, { icon : 2, time: 1000})
+              }
+            }).catch(function (error) { // 请求失败处理
+              console.log(error);
+              layer.msg(error.message, { icon : 2, time: 100000})
+            });
+          }
+          /*layer.open({
               type: 1,
               title:"表单提交结果",
               content: `<div style="padding: 10px"><p>是否通过 : ${isValidate}</p> <p>表单数据 : ${JSON.stringify(model)} </p> <p>错误信息 : ${JSON.stringify(errors)}</p></div>`,
@@ -79,20 +105,15 @@
               isHtmlFragment: true,
               btn : [{ text: '确认', callback(index) {  layer.close(index) }}],
               area : '500px'
-          });
+          });*/
         });
-      }
-
-      const onChange = function (el,a,b) {
-        console.log(el,a,b)
       }
 
       return {
         layFormRef1,
         validate1,
         rules,
-        model,
-        onChange
+        model
       }
     },
     methods: {

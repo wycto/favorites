@@ -68,9 +68,7 @@
                             if(res.status==200){
                                 if(res.data.code==200){
                                     localStorage.setItem('token',res.data.token);
-                                    console.log(localStorage.getItem('token'));
-                                    //window.location.href = "/";
-                                    //window.location.href = "/index/index/index";
+                                    window.location.href = "/";
                                     layer.msg(res.data.msg);
                                 }else{
                                     layer.msg(res.data.msg, { icon : 2, time: 1000})

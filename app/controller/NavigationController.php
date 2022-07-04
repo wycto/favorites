@@ -91,8 +91,55 @@ class NavigationController
      */
     public function store(Request $request)
     {
-        $params = $request->all();
-        return response('hello webman');
+        $token = $request->header('token');
+        if(empty($token)){
+            return json(array(
+                'code'=>201,
+                'msg'=>'token不能为空'.$token
+            ));
+        }
+
+        $user = User::firstWhere('token',$token);
+        if(empty($user)){
+            return json(array(
+                'code'=>201,
+                'msg'=>'token失效或者不存在用户'.$token
+            ));
+        }
+
+        $name = $request->post('name');
+        $url = $request->post('url','');
+        $pid = $request->post('pid');
+
+        if(empty($pid)){
+            return json(array(
+                'code'=>201,
+                'msg'=>'清选择上级'
+            ));
+        }
+
+        if(empty($name)){
+            return json(array(
+                'code'=>201,
+                'msg'=>'清输入名称'
+            ));
+        }
+
+        $navigation = new Navigation();
+        $navigation->name = $name;
+        $navigation->url = $url;
+
+        $pid = $request->post('pid');
+        $pid = explode("/",$pid);
+        $pid = $pid[count($pid)-1];
+        $navigation->pid = $pid;
+        $navigation->save();
+
+        $data = array(
+            'code'=>200,
+            'msg'=>'添加成功'
+        );
+        return json($data);
     }
     /**
      * 获取详情只支持get访问 /foo/{id}

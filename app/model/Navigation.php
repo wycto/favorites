@@ -6,7 +6,12 @@ use support\Model;
 
 class Navigation extends Model
 {
-    const CREATED_AT = 'creation_time';
+    /**
+     * 指示是否自动维护时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * 与模型关联的表名
